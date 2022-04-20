@@ -7,7 +7,12 @@ Run an exit node on google cloud run service
 TAILSCALE_VERSION=1.22.2
 docker build \
   --build-arg TAILSCALE_VERSION=${TAILS_SCALE} \
-  -t fjctp/tailscale:v1.22.2 .
+  -t fjctp/tailscale:1.22.2 .
+
+docker tag fjctp/tailscale:1.22.2 \
+  us-west1-docker.pkg.dev/tailscale-cloudrun/tailscale/tailscale:1.22.2
+
+docker push us-west1-docker.pkg.dev/tailscale-cloudrun/tailscale/tailscale:1.22.2
 ```
 
 ## run as an exit node
