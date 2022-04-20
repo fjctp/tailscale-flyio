@@ -1,6 +1,11 @@
 #!/bin/sh
 
 /tailscale/tailscaled --tun=userspace-networking &
-/tailscale/tailscale up --authkey=${TAILSCALE_AUTHKEY} --hostname=cloudrun-app ${@:1}
+until /tailscale/tailscale up --authkey=${TAILSCALE_AUTHKEY} --hostname=cloudrun-app ${@:1}
+do
+  sleep 0.1
+done
+
 echo "Tailscale started"
-fg
+
+sleep infinity
