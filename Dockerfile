@@ -1,5 +1,5 @@
 FROM alpine:latest as tailscale
-ARG TAILSCALE_VERSION=1.60.1
+ARG TAILSCALE_VERSION=1.66.4
 ENV TSFILE=tailscale_${TAILSCALE_VERSION}_amd64.tgz
 WORKDIR /tailscale
 RUN wget https://pkgs.tailscale.com/stable/${TSFILE} && \
