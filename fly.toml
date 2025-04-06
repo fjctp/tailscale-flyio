@@ -1,4 +1,6 @@
-# fly.toml file generated for exit-node on 2022-12-30T17:00:53-08:00
+# Setup an exit node for tailscale network
+#
+# Set authkey, run `flyctl secrets set TS_AUTHKEY=YOUR_KEY`
 
 app = "exit-node"
 primary_region = "sjc"
@@ -7,9 +9,13 @@ kill_timeout = 5
 processes = []
 
 [env]
+  # as of 2025-04-05, somehow PATH is not set. Cannot find `tailscaled` command.
+  PATH = "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+  TS_HOSTNAME = "exit-node"
+  TS_EXTRA_ARGS = "--advertise-exit-node"
 
 [build]
-  dockerfile = "Dockerfile"
+  image = "tailscale/tailscale:v1.82.0"
 
 [mounts]
   source = "tailscale_state"
