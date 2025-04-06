@@ -1,0 +1,47 @@
+name: Update fly.toml with latest Docker image
+
+on:
+  schedule:
+    - cron: '0 2 * * 0' # Every Sunday at 2am UTC
+  workflow_dispatch: # allow manual triggering too
+
+jobs:
+  update-image:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Get latest Tailscale image tag from Docker Hub
+        id: get_latest_tag
+        run: |
+          latest_tag=$(curl -s https://registry.hub.docker.com/v2/repositories/tailscale/tailscale/tags \
+            | jq -r '.results[] | select(.name | test("^v[0-9]+\\.[0-9]+\\.[0-9]+$")) | .name' \
+            | sort -Vr | head -n 1)
+          echo "Latest tag is $latest_tag"
+          echo "tag=$latest_tag" >> "$GITHUB_OUTPUT"
+
+      - name: Update fly.toml with latest image tag
+        run: |
+          sed -i -E "s|image = \"tailscale/tailscale:.*\"|image = \"tailscale/tailscale:${{ steps.get_latest_tag.outputs.tag }}\"|" fly.toml
+
+      - name: Create Pull Request
+        id: cpr
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "feat: update tailscale to ${{ steps.get_latest_tag.outputs.tag }}"
+          branch: feat/update-tailscale-image
+          title: "Update Tailscale image to ${{ steps.get_latest_tag.outputs.tag }}"
+          body: |
+            This PR updates the Docker image version in `fly.toml` to the latest tag: `${{ steps.get_latest_tag.outputs.tag }}`
+          labels: |
+            automated
+            docker
+
+      - name: Check outputs
+        if: ${{ steps.cpr.outputs.pull-request-number }}
+        run: |
+          echo "Pull Request Number - ${{ steps.cpr.outputs.pull-request-number }}"
+          echo "Pull Request URL - ${{ steps.cpr.outputs.pull-request-url }}"
