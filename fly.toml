@@ -12,6 +12,7 @@ processes = []
   # as of 2025-04-05, somehow PATH is not set. Cannot find `tailscaled` command.
   PATH = "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
   TS_HOSTNAME = "exit-node"
+  TS_STATE_DIR = "/var/lib/tailscale"
   TS_EXTRA_ARGS = "--advertise-exit-node"
 
 [build]
