@@ -18,7 +18,7 @@ processes = []
   TS_EXTRA_ARGS = "--advertise-exit-node"
 
 [build]
-  image = "tailscale/tailscale:v1.84.0"
+  image = "tailscale/tailscale:v1.84.2"
 
 [mounts]
   source = "tailscale_state"
