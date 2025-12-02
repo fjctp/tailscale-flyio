@@ -1,4 +1,4 @@
-name: Update fly.toml with latest Docker image
+name: Update to latest Docker image
 
 on:
   schedule:
@@ -22,7 +22,7 @@ jobs:
           echo "Latest tag is $latest_tag"
           echo "tag=$latest_tag" >> "$GITHUB_OUTPUT"
 
-      - name: Update fly.toml with latest image tag
+      - name: Update to latest image tag
         run: |
           sed -i -E "s|image = \"tailscale/tailscale:.*\"|image = \"tailscale/tailscale:${{ steps.get_latest_tag.outputs.tag }}\"|" fly.toml
 
