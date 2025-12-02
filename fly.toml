@@ -16,6 +16,7 @@ processes = []
   TS_HOSTNAME = "exit-node"
   TS_STATE_DIR = "/var/lib/tailscale"
   TS_EXTRA_ARGS = "--advertise-exit-node"
+  TS_AUTH_ONCE = true
 
 [build]
   image = "tailscale/tailscale:v1.90.9"
