@@ -19,7 +19,7 @@ processes = []
   TS_AUTH_ONCE = true
 
 [build]
-  image = "tailscale/tailscale:v1.92.5"
+  image = "tailscale/tailscale:v1.94.1"
 
 [mounts]
   source = "tailscale_state"
